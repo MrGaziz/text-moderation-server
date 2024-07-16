@@ -37,11 +37,11 @@ public class TextModerationService {
         attributes.put("IDENTITY_ATTACK", new HashMap<>());
         attributes.put("INSULT", new HashMap<>());
         attributes.put("THREAT", new HashMap<>());
-        attributes.put("SEXUALLY_EXPLICIT", new HashMap<>());
-        attributes.put("FLIRTATION", new HashMap<>());
+//        attributes.put("SEXUALLY_EXPLICIT", new HashMap<>());
+//        attributes.put("FLIRTATION", new HashMap<>());
 
         data.put("comment", Map.of("text", text));
-        data.put("languages", List.of("en"));
+        data.put("languages", List.of("en", "ru"));
         data.put("requestedAttributes", attributes);
 
         ResponseEntity<String> response = restTemplate.postForEntity(url, data, String.class);
