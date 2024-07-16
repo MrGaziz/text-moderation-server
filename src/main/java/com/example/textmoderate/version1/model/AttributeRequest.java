@@ -1,4 +1,4 @@
-package com.example.textmoderate.model;
+package com.example.textmoderate.version1.model;
 
 public class AttributeRequest {
     private String type = "default";

@@ -1,4 +1,4 @@
-package com.example.textmoderate.service;
+package com.example.textmoderate.version1.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

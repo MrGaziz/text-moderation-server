@@ -1,4 +1,4 @@
-package com.example.textmoderate.service;
+package com.example.textmoderate.version1.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
