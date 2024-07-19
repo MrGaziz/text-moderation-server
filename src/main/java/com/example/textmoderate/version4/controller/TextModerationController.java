@@ -30,7 +30,6 @@ public class TextModerationController {
 
 
     private String extractMsisdnFromToken(String token) {
-        // Extract MSISDN from the token (implementation depends on token structure of Yelaman's project)
         return "87077777777"; // Example
     }
 }

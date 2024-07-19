@@ -4,13 +4,11 @@ public class ModerationResult {
     private boolean isApproved;
     private String reason;
 
-    // Конструктор
     public ModerationResult(boolean isApproved, String reason) {
         this.isApproved = isApproved;
         this.reason = reason;
     }
 
-    // Геттеры и сеттеры
     public boolean isApproved() {
         return isApproved;
     }
