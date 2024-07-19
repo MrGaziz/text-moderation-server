@@ -1,6 +1,7 @@
 package com.example.textmoderate.version4.service;
 
 
+import com.example.textmoderate.version4.model.ModerationResult;
 import com.example.textmoderate.version4.utils.TextModerationUtils;
 import com.example.textmoderate.version4.model.ModeratedMessage;
 import com.example.textmoderate.version4.model.RejectReason;
@@ -35,27 +36,27 @@ public class ModerationFacadeService {
         this.openAIModerationService = openAIModerationService;
     }
 
-    public String moderateTextMessage(String msisdn, String textMessage) {
+    public ModerationResult moderateTextMessage(String msisdn, String textMessage) {
         int status = moderateWithDatabase(textMessage);
 
         if (status == 1) {
             String googleResult = moderateWithGoogleAPI(textMessage);
-            status = TextModerationUtils.mapRejectionReasonToStatus(googleResult);
+            status = TextModerationUtils.mapRejectionReasonToStatus(googleResult, true);
         }
 
         if (status == 1) {
             String openAIResult = moderateWithOpenAI(textMessage);
-            status = TextModerationUtils.mapRejectionReasonToStatus(openAIResult);
+            status = TextModerationUtils.mapRejectionReasonToStatus(openAIResult, false);
         }
 
         persistModeratedMessage(msisdn, textMessage, status);
-
-        return getRejectReason(status);
+        String reason = getRejectReason(status);
+        boolean isApproved = "accept".equals(reason);
+        return new ModerationResult(isApproved, isApproved ? null : reason);
     }
 
     private int moderateWithDatabase(String text) {
-        String result = databaseModerationService.checkTextAgainstDatabase(text);
-        return "reject".equalsIgnoreCase(result) ? 2 : 1; // 2: profanity, 1: accepted
+        return databaseModerationService.checkTextAgainstDatabase(text);
     }
 
     private String moderateWithGoogleAPI(String text) {

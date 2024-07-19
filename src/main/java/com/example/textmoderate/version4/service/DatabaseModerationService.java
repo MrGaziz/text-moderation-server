@@ -16,16 +16,16 @@ public class DatabaseModerationService {
         this.prohibitedWordRepository = prohibitedWordRepository;
     }
 
-    public String checkTextAgainstDatabase(String text) {
+    public int checkTextAgainstDatabase(String text) {
         String[] words = text.split("\\s+");
         for (String word : words) {
             for (ProhibitedWord badWord : prohibitedWordRepository.findAll()) {
                 int threshold = (int) (badWord.getWord().length() * 0.3); // Порог в 20% от длины слова
                 if (levenshteinDistance.apply(word.toLowerCase(), badWord.getWord().toLowerCase()) <= threshold) {
-                    return "reject";
+                    return 2;
                 }
             }
         }
-        return "accept";
+        return 1;
     }
 }

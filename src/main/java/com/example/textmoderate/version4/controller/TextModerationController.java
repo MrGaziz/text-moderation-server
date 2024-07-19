@@ -1,5 +1,7 @@
 package com.example.textmoderate.version4.controller;
 
+import com.example.textmoderate.version4.model.ModerationResponse;
+import com.example.textmoderate.version4.model.ModerationResult;
 import com.example.textmoderate.version4.service.ModerationFacadeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,22 +18,16 @@ public class TextModerationController {
     }
 
     @PostMapping("/moderate")
-    public Map<String, Object> moderateMessage(@RequestHeader("Authorization") String token,
-                                               @RequestHeader("Accept-Language") String language,
-                                               @RequestBody Map<String, String> request) {
+    public ModerationResponse moderateMessage(@RequestHeader("Authorization") String token,
+                                              @RequestHeader("Accept-Language") String language,
+                                              @RequestBody Map<String, String> request) {
         String msisdn = extractMsisdnFromToken(token);
         String textMessage = request.get("text_message");
 
-        String reason = moderationFacadeService.moderateTextMessage(msisdn, textMessage);
-        boolean isApproved = "accept".equals(reason);
-
-        return Map.of(
-                "data", Map.of(
-                        "is_approved", isApproved,
-                        "reason", isApproved ? null : reason
-                )
-        );
+        ModerationResult result = moderationFacadeService.moderateTextMessage(msisdn, textMessage);
+        return new ModerationResponse(result);
     }
+
 
     private String extractMsisdnFromToken(String token) {
         // Extract MSISDN from the token (implementation depends on token structure of Yelaman's project)

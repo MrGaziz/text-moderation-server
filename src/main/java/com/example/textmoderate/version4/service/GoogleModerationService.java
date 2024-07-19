@@ -22,7 +22,7 @@ public class GoogleModerationService {
 
     private final RestTemplate restTemplate;
 
-    private static final double THRESHOLD = 0.6;
+    private static final double THRESHOLD = 0.68;
     private static final Logger log = LoggerFactory.getLogger(GoogleModerationService.class);
 
     public GoogleModerationService(RestTemplate restTemplate) {

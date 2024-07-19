@@ -28,16 +28,21 @@ public class OpenAIModerationService {
                 """
                         Review the provided statements to determine if they should be approved or rejected based on the \
                         following criteria:
-                        Presence of profanity (including in various languages)
-                        Agitation against the state
-                        Promotion of drugs, alcohol, etc.
-                        Fraudulent operations
-                        Sexually explicit content
-                        Flirtation
-                        Simple social greetings or personal introductions without commercial intent (e.g., 'Hello, how are you?')
+                        Presence of profanity (including in various languages) - reject profanity
+                        Agitation against the state - reject agitation
+                        Promotion of drugs, alcohol, etc. - reject propaganda
+                        Fraudulent operations - reject fraud
+                        Sexually explicit content - reject sexual_explicit
+                        Severe toxicity - reject severe_toxicity
+                        Threats - reject threat
+                        Insults - reject insult
+                        Identity attacks - reject identity_attack
+                        Acceptable statements:
+                        Statements that do not include any of the above criteria - accept
                         Respond with 'accept' if a statement meets none of the criteria. If a statement meets any of the criteria, \
-                        respond with 'reject' followed by the specific attribute causing the rejection (e.g., 'reject flirtation', 'reject social greeting'). \
-                        Note that messages may be in various languages and need to include relevant commercial content to be approved."""
+                        respond with 'reject' followed by the specific attribute causing the rejection (e.g., 'reject profanity', 'reject agitation'). \
+                        Note that messages may be in various languages and need to include relevant commercial content to be approved.
+                        """
         );
 
         ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), content);

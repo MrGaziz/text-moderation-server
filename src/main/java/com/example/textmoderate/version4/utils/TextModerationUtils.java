@@ -16,16 +16,19 @@ public class TextModerationUtils {
     static {
         CATEGORY_MAP.put("profanity", 2);
         CATEGORY_MAP.put("toxicity", 3);
-        CATEGORY_MAP.put("threat", 4);
-        CATEGORY_MAP.put("propaganda", 5);
-        CATEGORY_MAP.put("agitation", 6);
-        CATEGORY_MAP.put("fraud", 7);
-        CATEGORY_MAP.put("sexual_explicit", 8);
+        CATEGORY_MAP.put("severe_toxicity", 4);
+        CATEGORY_MAP.put("threat", 5);
+        CATEGORY_MAP.put("propaganda", 6);
+        CATEGORY_MAP.put("agitation", 7);
+        CATEGORY_MAP.put("fraud", 8);
+        CATEGORY_MAP.put("sexual_explicit", 9);
+        CATEGORY_MAP.put("insult", 10);
+        CATEGORY_MAP.put("identity_attack", 11);
     }
 
-    public static int mapRejectionReasonToStatus(String reason) {
-        if ("approve".equalsIgnoreCase(reason)) {
-            return 1; // 1: accepted
+    public static int mapRejectionReasonToStatus(String reason, boolean useExactMatch) {
+        if ("accept".equalsIgnoreCase(reason)) {
+            return 1; // 1: accept
         }
 
         // Убираем слово "reject" и все не-буквенные символы
@@ -35,20 +38,24 @@ public class TextModerationUtils {
         String[] words = sanitizedReason.split("\\s+");
 
         for (String word : words) {
-            String closestMatch = findClosestCategoryMatch(word);
-            if (!"unknown".equals(closestMatch)) {
-                return CATEGORY_MAP.getOrDefault(closestMatch, 9); // 9: unknown reason
+            if (useExactMatch) {
+                // Проверка точного соответствия
+                if (CATEGORY_MAP.containsKey(word)) {
+                    return CATEGORY_MAP.get(word);
+                }
+            } else {
+                // Проверка ближайшего соответствия
+                String closestMatch = findClosestCategoryMatch(word);
+                if (!"unknown".equals(closestMatch)) {
+                    return CATEGORY_MAP.getOrDefault(closestMatch, 12); // 12: unknown reason
+                }
             }
         }
-        return 9; // unknown reason
+        return 12; // unknown reason
     }
 
     private static String findClosestCategoryMatch(String category) {
         Set<String> categories = CATEGORY_MAP.keySet();
-
-        if (categories.contains(category)) {
-            return category;
-        }
 
         String closestMatch = null;
         int minDistance = Integer.MAX_VALUE;
@@ -64,6 +71,7 @@ public class TextModerationUtils {
         return closestMatch != null ? closestMatch : "unknown";
     }
 }
+
 
 
 
