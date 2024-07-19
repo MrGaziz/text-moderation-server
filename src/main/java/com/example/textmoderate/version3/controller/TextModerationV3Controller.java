@@ -2,7 +2,6 @@ package com.example.textmoderate.version3.controller;
 
 import com.example.textmoderate.version3.service.BadWordsService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,11 +9,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-public class TextModerationController {
+public class TextModerationV3Controller {
 
     private final BadWordsService badWordsService;
 
-    public TextModerationController(BadWordsService badWordsService) {
+    public TextModerationV3Controller(BadWordsService badWordsService) {
         this.badWordsService = badWordsService;
     }
 
