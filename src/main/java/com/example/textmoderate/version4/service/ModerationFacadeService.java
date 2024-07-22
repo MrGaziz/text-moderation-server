@@ -1,12 +1,11 @@
 package com.example.textmoderate.version4.service;
 
 
-import com.example.textmoderate.version4.model.ModerationResult;
-import com.example.textmoderate.version4.utils.TextModerationUtils;
 import com.example.textmoderate.version4.model.ModeratedMessage;
-import com.example.textmoderate.version4.model.RejectReason;
+import com.example.textmoderate.version4.model.ModerationResult;
 import com.example.textmoderate.version4.repository.ModeratedMessageRepository;
 import com.example.textmoderate.version4.repository.RejectReasonRepository;
+import com.example.textmoderate.version4.utils.TextModerationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,7 @@ public class ModerationFacadeService {
         this.openAIModerationService = openAIModerationService;
     }
 
-    public ModerationResult moderateTextMessage(String msisdn, String textMessage) {
+    public ModerationResult moderateTextMessage(String msisdn, String textMessage, String language) {
         int status = moderateWithDatabase(textMessage);
 
         if (status == 1) {
@@ -50,7 +49,7 @@ public class ModerationFacadeService {
         }
 
         persistModeratedMessage(msisdn, textMessage, status);
-        String reason = getRejectReason(status);
+        String reason = getRejectReason(status, language);
         boolean isApproved = "accept".equals(reason);
         return new ModerationResult(isApproved, isApproved ? null : reason);
     }
@@ -87,11 +86,16 @@ public class ModerationFacadeService {
         moderatedMessageRepository.save(message);
     }
 
-    private String getRejectReason(int status) {
+    private String getRejectReason(int status, String language) {
         return rejectReasonRepository.findById(status)
-                .map(RejectReason::getReason)
+                .map(reason -> switch (language) {
+                    case "kk" -> reason.getReasonKazakh();
+                    case "ru" -> reason.getReasonRussian();
+                    default -> reason.getReason();
+                })
                 .orElse("Unknown reason");
     }
+
 }
 
 

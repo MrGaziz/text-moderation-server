@@ -11,10 +11,19 @@ public class RejectReason {
     @Id
     private int id;
     private String reason;
-
+    private String reasonKazakh;
+    private String reasonRussian;
 
     public String getReason() {
         return reason;
     }
 
+    public String getReasonKazakh() {
+        return reasonKazakh;
+    }
+
+    public String getReasonRussian() {
+        return reasonRussian;
+    }
 }
+

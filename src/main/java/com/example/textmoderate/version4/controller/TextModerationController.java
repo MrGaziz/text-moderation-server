@@ -24,7 +24,7 @@ public class TextModerationController {
         String msisdn = extractMsisdnFromToken(token);
         String textMessage = request.get("text_message");
 
-        ModerationResult result = moderationFacadeService.moderateTextMessage(msisdn, textMessage);
+        ModerationResult result = moderationFacadeService.moderateTextMessage(msisdn, textMessage, language);
         return new ModerationResponse(result);
     }
 

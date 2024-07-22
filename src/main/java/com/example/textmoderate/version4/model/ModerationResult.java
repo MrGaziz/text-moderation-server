@@ -1,6 +1,9 @@
 package com.example.textmoderate.version4.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ModerationResult {
+    @JsonProperty("is_approved")
     private boolean isApproved;
     private String reason;
 
@@ -8,7 +11,7 @@ public class ModerationResult {
         this.isApproved = isApproved;
         this.reason = reason;
     }
-
+    @JsonProperty("is_approved")
     public boolean isApproved() {
         return isApproved;
     }
