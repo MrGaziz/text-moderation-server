@@ -50,7 +50,7 @@ public class ModerationFacadeService {
 
         persistModeratedMessage(msisdn, textMessage, status);
         String reason = getRejectReason(status, language);
-        boolean isApproved = "accept".equals(reason);
+        boolean isApproved = "-".equals(reason);
         return new ModerationResult(isApproved, isApproved ? null : reason);
     }
 
